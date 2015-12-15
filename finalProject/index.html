@@ -60,10 +60,12 @@
     // **************** SETUP ***********************
     // **********************************************
     
+    var isPaused;
+    
     // Load controls screen
     $(document).ready(function() {
         // The game will start paused until the player activates it later, after reading the instructions
-        var isPaused = true;
+        isPaused = true;
         // Display the instructions
         $('#myModal').modal('show');
     });
@@ -191,13 +193,13 @@
         createBlocks();
         createSphere();
         loadAudio();
-
+        
         // Camera
 		camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 20000 );
         scene.add(camera);
         camera.position.set(0, 40, -60);
 		camera.lookAt( scene.position );
-
+        
         // Renderer
 		renderer = new THREE.WebGLRenderer();
 		renderer.setSize( window.innerWidth, window.innerHeight );
@@ -218,7 +220,11 @@
         // Mouse controls
         controls = new THREE.OrbitControls( camera, renderer.domElement );
         controls.addEventListener( 'change', render );
-		
+        
+        if (!isPaused) {
+            scene.simulate();
+        }
+        
         render();
 	}
     
@@ -231,6 +237,8 @@
         if (!isPaused) {
             scene.simulate();
         }
+        
+        //scene.simulate();
         
         // -----------------------------------
         // ------ HANDLE USER INPUT ----------
