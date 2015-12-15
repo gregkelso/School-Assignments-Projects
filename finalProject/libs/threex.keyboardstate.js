@@ -75,10 +75,16 @@ THREEx.KeyboardState.prototype.destroy	= function()
 
 THREEx.KeyboardState.MODIFIERS	= ['shift', 'ctrl', 'alt', 'meta'];
 THREEx.KeyboardState.ALIAS	= {
-	'deal'		: 68,
-	'stand'		: 83,
-	'hit'		: 72,
-	'reset'		: 82,
+//	'left'		: 37,
+//	'up'		: 38,
+//	'right'		: 39,
+//	'down'		: 40,
+//	'space'		: 32,
+//	'pageup'	: 33,
+//	'pagedown'	: 34,
+//	'tab'		: 9,
+//    'pause'     : 112,
+//	'escape'	: 27
 };
 
 /**
@@ -155,5 +161,3 @@ THREEx.KeyboardState.prototype.eventMatches = function(event, keyDesc) {
 	}
 	return true;
 }
-
-
