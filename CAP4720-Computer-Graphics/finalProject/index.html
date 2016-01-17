@@ -1,3 +1,21 @@
+<!--
+############################################################################################################################################
+############################################################################################################################################
+
+Contact Info:
+Greg Kelso
+gregorykelso@gmail.com
+
+Description:
+This was the final project for my Computer Graphics class. I used THREE.js, a javascript implementation of WebGL, with the physi.js
+physics engine, in addition to using jquery and bootstrap for additional interface features. The project was not finished in time,
+because my project idea was much more ambitious than what I was capable of in the time given. Regardless, I did get a working system
+with a platform and a moveable sphere. The pop-up menu describes how the controls work.
+
+############################################################################################################################################
+############################################################################################################################################
+-->
+
 <html>
 <head>
     <!-- Bootstrap imports -->
@@ -14,8 +32,7 @@
     <script src="libs/physijs_worker.js"></script>
 </head>
 <body>
-<!-- Modal -->
-<!-- Menu -->
+<!-- Modal Menu -->
 <div id="myModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
          Modal content 
@@ -27,7 +44,7 @@
             <div class="modal-body">
                 <table style="width: 100%">
                     <p>
-                    The goal of this game is to survive as long as possible. You won't win. This game is controlled with the keyboard only. Due to the weird physics engine, make sure you lightly tap the movement and jumping keys, instead of holding them down like in other video games. You will have time to practice before the challenge begins. After reading the controls below, close this menu and press 'B' on your keyboard to begin the game. Good luck.
+                    The goal of this game is to survive as long as possible. This game is controlled with the keyboard only. Due to the weird physics engine, make sure you lightly tap the movement and jumping keys, instead of holding them down like in other video games. You will have time to practice before the challenge begins. After reading the controls below, close this menu and press 'B' on your keyboard to begin the game.
                     </p>
                     <br/>
                     <tr>
@@ -60,9 +77,10 @@
     // **************** SETUP ***********************
     // **********************************************
     
+    // This variable is a flag used to help pause the physics engine when the user brings up the menu controls
     var isPaused;
     
-    // Load controls screen
+    // Load controls screen with jQuery
     $(document).ready(function() {
         // The game will start paused until the player activates it later, after reading the instructions
         isPaused = true;
@@ -70,6 +88,7 @@
         $('#myModal').modal('show');
     });
     
+    // Necessary for THREE.js
     'use strict';
     
     // Use physijs worker and ammo
@@ -124,6 +143,7 @@
         scene.add(block9);
         
         // Position the blocks
+        // Note: in physi.js, the block's __dirtyPosition must also be set. It is false by default
         block1.position.set(-10, 0, 10);
         block1.__dirtyPosition = true;
         block2.position.set(0, 0, 10);
@@ -143,6 +163,7 @@
         block9.position.set(10, 0, -10);
         block9.__dirtyPosition = true;
         
+        // Enable shadows for the blocks
         block1.receiveShadow = true;
         block2.receiveShadow = true;
         block3.receiveShadow = true;
@@ -158,6 +179,7 @@
     // ************* SPHERE CREATION ****************
     // **********************************************
     function createSphere() {
+        // Create the sphere with MeshPhong material, Sphere geometry, and combine it into a Physi.js mesh
         var sphereMat = Physijs.createMaterial(
             new THREE.MeshPhongMaterial({color: 0x444444}),
             friction,
@@ -167,9 +189,11 @@
             new THREE.SphereGeometry(3, 10, 10),
             sphereMat
         );
+        // Add parameters to the sphere & add it to the scene
         sphere.castShadow = true;
         sphere.receiveShadow = true;
         scene.add(sphere);
+        // Position the sphere
         sphere.position.set(0,15,0);
         sphere.__dirtyPosition = true;
     }
@@ -179,6 +203,7 @@
     // **********************************************
 	function init()
 	{
+        // Setup the keyboard, scene, enable gravity, and add the event listener for the engine
 		keyboard = new THREEx.KeyboardState();
 		scene = new Physijs.Scene;
 		scene.setGravity(new THREE.Vector3( 0, -30, 0 ));
@@ -221,6 +246,7 @@
         controls = new THREE.OrbitControls( camera, renderer.domElement );
         controls.addEventListener( 'change', render );
         
+        // Allows us to pause the engine while the user looks at the menu
         if (!isPaused) {
             scene.simulate();
         }
@@ -237,14 +263,6 @@
         if (!isPaused) {
             scene.simulate();
         }
-//        
-//        var timer = - new Date().getTime() * 0.0002;
-//
-//        camera.position.x = 1000 * Math.cos( timer );
-//
-//        camera.position.z = 1000 * Math.sin( timer );
-//
-//        camera.lookAt(new THREE.Vector3(0, 0, 0));
         
         scene.simulate();
         
